@@ -74,5 +74,5 @@ let rec derive context = function
      constraints_result >>= fun constraints ->
      derive added_context e >>= fun (ty, c) ->
      Ok (ty, Conj (c :: constraints))
-  | other ->
-     Error (Printf.sprintf "unsupported type: %s" (show_expr other))
+  | Case (e, clauses) ->
+     Error (Printf.sprintf "not implemented yet: derive for CASE")
