@@ -74,5 +74,12 @@ let rec derive context = function
      constraints_result >>= fun constraints ->
      derive added_context e >>= fun (ty, c) ->
      Ok (ty, Conj (c :: constraints))
-  | other ->
-     Error (Printf.sprintf "unsupported type: %s" (show_expr other))
+  | Case (e, clauses) ->
+    (* assume that p is variable pattern temporarily *)
+    let rec collect_vars = function
+      | PatVar (v) -> [v]
+      | PatStruct (elems) -> elems |> List.map ~f:(fun e -> collect_vars e)
+                                   |> List.fold_left ~init:[] ~f:(fun a b -> List.append a b)
+    in
+    let new_tyvars = List.map ~f:(fun (p, b) -> (p, new_tyvar ())) clauses in
+    Error (Printf.sprintf "WIP")
